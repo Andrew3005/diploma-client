@@ -1,20 +1,128 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="wrapper">
+  <div class="title">
+    LU decomposition
+  </div>
 
+
+  <div class="matrix">
+
+    <div class="bracket"></div>
+    <form [formGroup]="form">
+      <div>
+        <div class="row" *ngFor="let row of form.controls.matrix.controls; let ind = index" formArrayName="matrix">
+
+          <div class="row-item" *ngFor="let item of row.controls; let i = index;" formArrayName="{{ind}}">
+            <input class="number" type="number" [value]="item.value" formControlName="{{i}}">
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+    <div class="bracket"></div>
+
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-submit" type="submit" (click)="onSubmit()">Виконати</button>
+    <div>
+      <button class="btn" type="button" (click)="addRow()">Додати рядок</button>
+      <button class="btn" type="button" (click)="removeRow()">Видалити рядок</button>
+    </div>
+    <div>
+      <button class="btn" type="button" (click)="addColumn()">Додати колонку</button>
+      <button class="btn" type="button" (click)="removeColumn()">Видалити колонку</button>
+    </div>
+
+
+  </div>
+
+
+  <div class="result" *ngIf="result">
+    <div class="result-block">
+      <div class="block-title">JS</div>
+      <div class="result-inner">
+        <div class="matrix-wrapper">
+          <div class="matrix-title">Lower matrix</div>
+          <div class="matrix">
+
+            <div class="bracket"></div>
+            <div class="row-item" *ngFor="let row of result.js.result.lower">
+              <div class="number" *ngFor="let item of row; let i = index"
+                [ngClass]="{'green1' : i === 0, 'green2' : i === 1,  'green3' : i === 2,  'green4' : i === 3}">{{item | number: '.0-3' }}
+              </div>
+
+            </div>
+
+            <div class="bracket"></div>
+          </div>
+        </div>
+        <div class="matrix-wrapper">
+          <div class="matrix-title">Upper matrix</div>
+          <div class="matrix">
+            <div class="bracket"></div>
+            <div class="row-item" *ngFor="let row of result.js.result.upper">
+              <div class="number" *ngFor="let item of row; let i = index"
+                [ngClass]="{'green1' : i === 0, 'green2' : i === 1,  'green3' : i === 2,  'green4' : i === 3}">{{item | number: '.0-3' }}
+              </div>
+            </div>
+            <div class="bracket"></div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="result-block">
+      <div class="block-title">CPP</div>
+      <div class="result-inner">
+        <div class="matrix-wrapper">
+          <div class="matrix-title">Lower matrix</div>
+          <div class="matrix">
+            <div class="bracket"></div>
+            <div class="row-item" *ngFor="let row of result.cpp.result[0]">
+              <div class="number" *ngFor="let item of row; let i = index"
+                [ngClass]="{'green1' : i === 0, 'green2' : i % 3 === 2,  'green3' : i % 3 === 1,  'green4' : i % 3 === 0}">
+                {{item | number: '.0-3' }}</div>
+            </div>
+
+            <div class="bracket"></div>
+          </div>
+        </div>
+        <div class="matrix-wrapper">
+          <div class="matrix-title">Upper matrix</div>
+          <div class="matrix">
+            <div class="bracket"></div>
+            <div class="row-item" *ngFor="let row of result.cpp.result[1]">
+              <div class="number" *ngFor="let item of row; let i = index"
+                [ngClass]="{'green1' : i === 0, 'green2' : i === 1,  'green3' : i === 2,  'green4' : i === 3}">{{item | number: '.0-3' }}
+              </div>
+            </div>
+
+            <div class="bracket"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="difference">
+      <div class="time">
+        todo
+        cpp: <span>{{result.cpp.times}}</span> ms
+      </div>
+      <div class="time">
+        js: <span>{{result.js.time}}</span> ms
+      </div>
+      <div class="time-end">
+        js/cpp: <span>{{result.js.time / result.cpp.time}}</span>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<!-- {{form | json}} -->
